@@ -8,7 +8,7 @@ use Input;
 use App\Lembur_pegawai;
 use App\Pegawai;
 use App\Kategori_lembur;
-
+use Carbon\Carbon;
 class lemburpegawaiController extends Controller
 {
     /**
@@ -16,6 +16,10 @@ class lemburpegawaiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('dua');
+    }
     public function index()
     {
 
@@ -24,8 +28,9 @@ class lemburpegawaiController extends Controller
         //                                     lembur_pegawais.pegawai_id as pegawai_id" )
         //                         ->groupBy('kode_lembur_id','pegawai_id')
         //                         ->get();
-        $lembur=Lembur_pegawai::all();
-        return view('lemburp.index',compact('lembur'));
+        $lembur=Lembur_pegawai::paginate(5);
+        
+        return view('lemburp.index',compact('lembur','a'));
     }
 
     /**
@@ -56,40 +61,96 @@ class lemburpegawaiController extends Controller
      */
     public function store(Request $request)
     {
+        $lemburp=Lembur_pegawai::all();
+        $check=0;
+        foreach ($lemburp as $data) {
+            $check++;
+        }
+        if ($check>0) {
+            # code...
+            foreach ($lemburp as $data) {
+                # code...
+                $tanggal=$data->created_at->day.'-'.$data->created_at->month.'-'.$data->created_at->year;
+                $sekarang=Carbon::now()->day.'-'.Carbon::now()->month.'-'.Carbon::now()->year;
+                if($tanggal == $sekarang && $data->pegawai_id == Request('pegawai_id')){
+                    $tanggal=true;
+                    $pegawai=Pegawai::all();
+                    return view('lemburp/create',compact('tanggal','pegawai'));
+                   
+                }
+                
+            }
+            $roles=[
+                        'pegawai_id'=>'required',
+                        'Jumlah_jam'=>'required|numeric',
+                    ];
+                    $sms=[
+                        'pegawai_id.required'=>'jangan kosong',
+                        'Jumlah_jam.required'=>'jangan kosong',
+                        'Jumlah_jam.numeric'=>'harus angka',
+                    ];
+                    $validasi=Validator::make(Input::all(),$roles,$sms);
+                    if($validasi->fails()){
+                        return redirect('lemburp/create')
+                                ->WithErrors($validasi)
+                                ->WithInput();
+                    }
+                    else{
 
-        $roles=[
-            'pegawai_id'=>'required',
-            'Jumlah_jam'=>'required|numeric',
-        ];
-        $sms=[
-            'pegawai_id.required'=>'jangan kosong',
-            'Jumlah_jam.required'=>'jangan kosong',
-            'Jumlah_jam.numeric'=>'harus angka',
-        ];
-        $validasi=Validator::make(Input::all(),$roles,$sms);
-        if($validasi->fails()){
-            return redirect('lemburp/create')
-                    ->WithErrors($validasi)
-                    ->WithInput();
+                        $pegawai=Pegawai::where('id',Request('pegawai_id'))->first();
+                        $kategori=Kategori_lembur::where('jabatan_id',$pegawai->jabatan_id)->where('golongan_id',$pegawai->golongan_id)->first();
+
+                        // dd($kategori);
+                        if($kategori){
+
+                            $lembur=new Lembur_pegawai;
+                            $lembur->pegawai_id=Request('pegawai_id');
+                            $lembur->kode_lembur_id=$kategori->id;
+                            $lembur->Jumlah_jam=Request('Jumlah_jam');
+                            $lembur->save();
+                            return redirect('lemburp');
+                        
+                        
+                        }
+                            return redirect('error1');
+                    }
         }
         else{
 
-            $pegawai=Pegawai::where('id',Request('pegawai_id'))->first();
-            $kategori=Kategori_lembur::where('jabatan_id',$pegawai->jabatan_id)->where('golongan_id',$pegawai->golongan_id)->first();
+                    $roles=[
+                        'pegawai_id'=>'required',
+                        'Jumlah_jam'=>'required|numeric',
+                    ];
+                    $sms=[
+                        'pegawai_id.required'=>'jangan kosong',
+                        'Jumlah_jam.required'=>'jangan kosong',
+                        'Jumlah_jam.numeric'=>'harus angka',
+                    ];
+                    $validasi=Validator::make(Input::all(),$roles,$sms);
+                    if($validasi->fails()){
+                        return redirect('lemburp/create')
+                                ->WithErrors($validasi)
+                                ->WithInput();
+                    }
+                    else{
 
-            // dd($kategori);
-            if($kategori){
+                        $pegawai=Pegawai::where('id',Request('pegawai_id'))->first();
+                        $kategori=Kategori_lembur::where('jabatan_id',$pegawai->jabatan_id)->where('golongan_id',$pegawai->golongan_id)->first();
 
-                $lembur=new Lembur_pegawai;
-                $lembur->pegawai_id=Request('pegawai_id');
-                $lembur->kode_lembur_id=$kategori->id;
-                $lembur->Jumlah_jam=Request('Jumlah_jam');
-                $lembur->save();
-                return redirect('lemburp');
-            
-            
-            }
-                return redirect('error1');
+                        // dd($kategori);
+                        if($kategori){
+
+                            $lembur=new Lembur_pegawai;
+                            $lembur->pegawai_id=Request('pegawai_id');
+                            $lembur->kode_lembur_id=$kategori->id;
+                            $lembur->Jumlah_jam=Request('Jumlah_jam');
+                            $lembur->save();
+                            return redirect('lemburp');
+                        
+                        
+                        }
+                            return redirect('error1');
+                    }
         }
     }
 

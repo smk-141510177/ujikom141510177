@@ -70,24 +70,27 @@
 												@endforeach
 												</td>
 												<td>
-													
+													@php
+														$jumlah_jam=0;
+													@endphp
 												@foreach($lemburp as $data2)
 													@if($data2->pegawai_id == $data->id)
-														{{$data2->Jumlah_jam}}
-														@php $b=$data2->Jumlah_jam*$data2->kategori->besar_uang; @endphp
-
+														@php $jumlah_jam+=$data2->Jumlah_jam; @endphp
 													@endif
 												@endforeach
+												{{$jumlah_jam}}
 												</td>
 												<td>
 													
 												@foreach($lemburp as $data2)
 													@if($data2->pegawai_id == $data->id)
-														{{$data2->Jumlah_jam*$data2->kategori->besar_uang}}
-														@php $b=$data2->Jumlah_jam*$data2->kategori->besar_uang; @endphp
+														@php 
+														$b=$jumlah_jam*$data2->kategori->besar_uang;
+														 @endphp
 
 													@endif
 												@endforeach
+												{{$b}}
 												</td>
 												<td>{{$data->golongan->besar_uang+$data->jabatan->besar_uang}}</td>
 												@php $c=$data->golongan->besar_uang+$data->jabatan->besar_uang; @endphp
@@ -95,14 +98,14 @@
 												<td>{{$a + $b + $c}}</td>
 													@php $no=0 @endphp
 													@foreach($penggajian as $check)
-														$no++
+														@php $no++ @endphp
 													@endforeach
 												<td>
-													
-												@foreach($tunjangan as $data1 )
 													@if($no==0)
 														Belum Diambil
 													@else
+												@foreach($tunjangan as $data1 )
+													
 													@foreach($penggajian as $data3)
 														@if($data3->tunjangan_pegawai_id == $data1->id && $data1->pegawai->id == $data->id )  
 															{{$data3->tanggal_pengambilan}}
@@ -110,27 +113,15 @@
 														
 														@elseif($data3->tunjangan_pegawai_id == $data1->id && $data1->pegawai->id != $data->id )
 															
-														@else
-														Belum Diambil
 														
 														@endif
 														@endforeach
-													@endif
 													@endforeach
+													@endif
 												</td>
-												<td>@foreach($tunjangan as $data1 )
-													@if($no==0)
+												<td>
+												@if($no==0)
 														Belum Diambil
-													@else
-													@foreach($penggajian as $data3)
-														@if($data3->tunjangan_pegawai_id == $data1->id && $data1->pegawai->id == $data->id )  
-															{{$data3->status_pengambilan}}
-														@elseif($data3->tunjangan_pegawai_id != $data1->id && $data1->pegawai->id != $data->id )
-														
-														@elseif($data3->tunjangan_pegawai_id == $data1->id && $data1->pegawai->id != $data->id )
-															
-														@else
-														Belum diambial
 														<form class="form-horizontal" role="form" method="POST" action="{{ url('/penggajian') }}">
 							                        {{ csrf_field() }}
 							                        	@foreach($tunjangan as $data1)
@@ -157,11 +148,17 @@
 							                            </div>
 							                        </div>
 							                    </form>
-														@endif
-														@endforeach
-														@endif
+												@else
+													@foreach($tunjangan as $data1 )
+													
+															@if($data3->tunjangan_pegawai_id == $data1->id && $data1->pegawai->id == $data->id )  
+																	{{$data3->status_pengambilan}}
+															
+															
+															@endif
 														
 													@endforeach
+												@endif
 
 													
 												</td>

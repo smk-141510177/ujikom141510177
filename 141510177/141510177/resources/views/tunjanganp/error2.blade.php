@@ -31,7 +31,38 @@
                         </div>
  <center><label><font color="red"> Pegawai tidak memiliki kategori Tunjangan!! Harus membuat dahulu kategori Tunjangan buat pegawai!!</font></label></center><br>
                        
-                       
+                       <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
+                            <label for="status" class="col-md-4 control-label">Status</label>
+
+                            <div class="col-md-6">
+                                <select name="status" class="form-control">
+                                    <option value="">Pilih</option>
+                                    <option value="Belum Menikah">Belum Menikah</option>
+                                    <option value="Menikah">Menikah</option>
+                                    <option value="Duda">Duda</option>
+                                    <option value="Janda">Janda</option>
+                                </select>
+                                @if ($errors->has('status'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('status') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group{{ $errors->has('jumlah_anak') ? ' has-error' : '' }}">
+                            <label for="jumlah_anak" class="col-md-4 control-label">Jumlah Anak</label>
+
+                            <div class="col-md-6">
+                                <input id="jumlah_anak" type="text" class="form-control" name="jumlah_anak" value="{{ old('jumlah_anak') }}"  autofocus>
+
+                                @if ($errors->has('jumlah_anak'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('jumlah_anak') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary form-control">

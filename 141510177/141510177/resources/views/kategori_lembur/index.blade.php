@@ -39,5 +39,6 @@
 		</tbody>
 	</table>
 	<a  href="{{url('kategori/create')}}" class="btn btn-primary form-control">Tambah</a>
+	<center>{{$kategori->links()}}</center>
 
 @endsection

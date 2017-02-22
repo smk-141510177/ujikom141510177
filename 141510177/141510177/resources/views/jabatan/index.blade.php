@@ -37,5 +37,6 @@
 		</tbody>
 	</table>
 	<a  href="{{url('jabatan/create')}}" class="btn btn-primary form-control">Tambah</a>
+	<center>{{$jabatan->links()}}</center>
 
 @endsection

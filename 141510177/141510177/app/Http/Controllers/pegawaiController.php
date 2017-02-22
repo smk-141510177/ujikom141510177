@@ -17,9 +17,13 @@ class pegawaiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
     public function index()
     {
-        $pegawai=Pegawai::all();
+        $pegawai=Pegawai::paginate(5);
         return view('pegawai.index',compact('pegawai'));
     }
 
@@ -190,7 +194,7 @@ class pegawaiController extends Controller
         $user->name = Request('name');
         $user->type_user = Request('type_user');
         $user->email = Request('email');
-        $user->save();
+        $user->update();
         
         $file= Input::file('photo');
         $destination= '/assets/image/';

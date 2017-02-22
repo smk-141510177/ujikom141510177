@@ -16,9 +16,13 @@ class tunjanganpController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('dua');
+    }
     public function index()
     {
-        $tunjanganp=Tunjangan_pegawai::all();
+        $tunjanganp=Tunjangan_pegawai::paginate(5);
         return view('tunjanganp.index',compact('tunjanganp'));
     }
 
@@ -29,9 +33,9 @@ class tunjanganpController extends Controller
      */
     public function create()
     {
-        $tunjangan=Tunjangan::all();
+        $tunjanganp=Tunjangan_pegawai::all();
         $pegawai=Pegawai::all();
-        return view('tunjanganp.create',compact('pegawai','tunjangan'));
+        return view('tunjanganp.create',compact('pegawai','tunjanganp'));
     }
     public function error2()
     {
@@ -48,12 +52,18 @@ class tunjanganpController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $roles=[
-            'pegawai_id'=>'required',
+            'pegawai_id'=>'required|unique:tunjangan_pegawais',
+            'jumlah_anak'=>'required|numeric',
+            'status'=>'required',
         ];
         $sms=[
             'pegawai_id.required'=>'jangan kosong',
+            'pegawai_id.unique'=>'Sudah ada',
+            'jumlah_anak.numeric'=>'harus angka',
+            'jumlah_anak.required'=>'jangan kosong',
+            'status.required'=>'jangan kosong',
         ];
         $validasi=Validator::make(Input::all(),$roles,$sms);
         if($validasi->fails()){
@@ -64,7 +74,11 @@ class tunjanganpController extends Controller
         else{
 
         $pegawai=Pegawai::where('id',Request('pegawai_id'))->first();
-            $tunjangan=Tunjangan::where('jabatan_id',$pegawai->jabatan_id)->where('golongan_id',$pegawai->golongan_id)->first();
+        $tunjangan=Tunjangan::where('jabatan_id',$pegawai->jabatan_id)
+                            ->where('golongan_id',$pegawai->golongan_id)
+                            ->where('status',Request('status'))
+                            ->where('jumlah_anak',Request('jumlah_anak'))
+                            ->first();
 
             if($tunjangan){
 

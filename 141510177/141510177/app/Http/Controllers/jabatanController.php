@@ -13,9 +13,13 @@ class jabatanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
     public function index()
     {
-        $jabatan=Jabatan::all();
+        $jabatan=Jabatan::paginate(5);
         return view('jabatan.index',compact('jabatan'));
     }
 

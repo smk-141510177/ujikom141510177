@@ -53,5 +53,10 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'admin' => \App\Http\Middleware\Admin::class,
+        'dua' => \App\Http\Middleware\HRD::class,
+        'dua' => \App\Http\Middleware\Keuangan::class,
+        'tiga' => \App\Http\Middleware\HRD::class,
+        'tiga' => \App\Http\Middleware\Keuangan::class,
+        'tiga' => \App\Http\Middleware\Pegawai::class,
     ];
 }

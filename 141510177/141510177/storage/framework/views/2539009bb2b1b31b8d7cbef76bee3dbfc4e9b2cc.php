@@ -39,8 +39,8 @@
                 <div class="navbar-header">
 
                     <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Toggle Navigation</span>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -84,11 +84,14 @@
 
                         <ul class="nav nav-pills nav-stacked nav-pills-stacked-example"> 
                         <!-- Authentication Links -->
+
                         <?php if(Auth::guest()): ?>
                             <li role="presentation" class="active form-control"><a href="<?php echo e(url('/login')); ?>"><font color="black"><strong>  Login </strong></font></a></li>
                         <?php else: ?>
+                        <?php if(Auth::user()->type_user == 'Admin'): ?>
                         <li role="presentation" class="<?php echo $__env->yieldContent('golongan'); ?>" ><a href="<?php echo e(url('/golongan')); ?>"><font color="black"><strong> Golongan</strong></font></strong></font></a></li>
                         <li role="presentation" class="<?php echo $__env->yieldContent('jabatan'); ?>"><a href="<?php echo e(url('/jabatan')); ?>"><font color="black"><strong> Jabatan</strong></font></a></li>
+                        <?php endif; ?>
                         <?php if(Auth::user()->type_user == 'Admin'): ?>
                         <li role="presentation" class="<?php echo $__env->yieldContent('pegawai'); ?>"><a href="<?php echo e(url('/pegawai')); ?>"><font color="black"><strong> Pegawai</strong></font></a></li>
                         <?php endif; ?>

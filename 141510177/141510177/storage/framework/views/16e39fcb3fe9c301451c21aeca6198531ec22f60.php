@@ -39,6 +39,7 @@
 		</tbody>
 	</table>
 	<a  href="<?php echo e(url('jabatan/create')); ?>" class="btn btn-primary form-control">Tambah</a>
+	<center><?php echo e($jabatan->links()); ?></center>
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

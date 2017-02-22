@@ -14,10 +14,13 @@ class golonganController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
     public function index()
     {
-        $golongan=Golongan::all();
+        $golongan=Golongan::paginate(5);
         return view('golongan.index',compact('golongan'));
     }
 

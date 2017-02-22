@@ -44,7 +44,13 @@
                                 @endif
                             </div>
                         </div>
-
+                        @if (isset($tanggal))
+                                    <span class="help-block">
+                                        <center>
+                                            <strong><font color="red"> Anda sudah memasukkan data lembur pegawai tersebut pada tanggal sekarang</font></strong>
+                                        </center>
+                                    </span>
+                                @endif
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary form-control">

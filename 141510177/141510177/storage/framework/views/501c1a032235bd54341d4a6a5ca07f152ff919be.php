@@ -41,6 +41,7 @@
 		</tbody>
 	</table>
 	<a  href="<?php echo e(url('kategori/create')); ?>" class="btn btn-primary form-control">Tambah</a>
+	<center><?php echo e($kategori->links()); ?></center>
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

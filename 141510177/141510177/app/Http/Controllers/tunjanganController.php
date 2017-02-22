@@ -15,9 +15,13 @@ class tunjanganController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
     public function index()
     {
-        $tunjangan=Tunjangan::all();
+        $tunjangan=Tunjangan::paginate(5);
         return view('tunjangan.index',compact('tunjangan'));
     }
 
@@ -47,6 +51,8 @@ class tunjanganController extends Controller
                 'golongan_id'=>'required',
                 'besar_uang'=>'required',
                 'besar_uang'=>'required|numeric',
+                'jumlah_anak'=>'required|numeric',
+                'status'=>'required',
             ];
             $sms=[
                 'kode_t.required'=>'jangan kosong',
@@ -55,6 +61,9 @@ class tunjanganController extends Controller
                 'golongan_id.required'=>'jangan kosong',
                 'besar_uang.required'=>'jangan kosong',
                 'besar_uang.numeric'=>'harus angka',
+                'jumlah_anak.numeric'=>'harus angka',
+                'jumlah_anak.required'=>'jangan kosong',
+                'status.required'=>'jangan kosong',
             ];
             $validasi= Validator::make(Input::all(),$roles,$sms);
             if($validasi->fails()){

@@ -4,12 +4,7 @@
     active
 @endsection
 @section('content')
-
-<div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-primary">
-                <div class="panel-heading">Pencarian Gaji Menurut Karyawan</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" role="form" action="{{ url('query') }}" method="GET"">
+<form class="form-horizontal" role="form" action="{{ url('query') }}" method="GET"">
                         {{ csrf_field() }}
 
                         
@@ -44,9 +39,7 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
+
 <div class="section">
 <div class="card-panel green white-text">Hasil pencarian : <b>{{$query}}</b></div>
     @foreach($penggajian as $data)
@@ -69,9 +62,7 @@
 
 @endsection
 @section('content1')
-				<div class="col-md-15 col-md-offset-0">
-                    <div class="panel panel-primary">
-                        <div class="panel-body">
+				
         <div class="col-md-15 col-md-offset-0">
             <div class="panel panel-primary">
 			    <div class="panel-heading">Data Penggajian</div>
@@ -187,7 +178,5 @@
         	</div>
         </div>
 
- 						</div>
-                    </div>
-                </div>
+ 					
 @endsection

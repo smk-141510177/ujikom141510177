@@ -37,5 +37,6 @@
 		</tbody>
 	</table>
 	<a  href="{{url('golongan/create')}}" class="btn btn-primary form-control">Tambah</a>
+	<center>{{$golongan->links()}}</center>
 
 @endsection
