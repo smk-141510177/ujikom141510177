@@ -56,8 +56,12 @@ class gajiController extends Controller
         // dd($wherepegawai);
         $wherekategorilembur=Kategori_lembur::where('jabatan_id',$wherepegawai->jabatan_id)->where('golongan_id',$wherepegawai->golongan_id)->first();
         // dd($wherekategorilembur);
-        $wherelemburpegawai=Lembur_pegawai::where('pegawai_id',$wherepegawai->id)->first();
-        // dd($wherelemburpegawai);
+        $wherelemburpegawai=Lembur_pegawai::where('pegawai_id',$wherepegawai->id)->get();
+        $Jumlah_jam=0;
+        foreach ($wherelemburpegawai as $jam) {
+            $Jumlah_jam+=$jam->Jumlah_jam;
+        }
+        // dd($Jumlah_jam);
         $wherejabatan=Jabatan::where('id',$wherepegawai->jabatan_id)->first();
         // dd($wherejabatan);
         $wheregolongan=Golongan::where('id',$wherepegawai->golongan_id)->first();
@@ -89,10 +93,10 @@ class gajiController extends Controller
         $penggajian->save();
         }
         else{
-            $penggajian->jumlah_jam_lembur=$wherelemburpegawai->Jumlah_jam;
-            $penggajian->jumlah_uang_lembur=$wherelemburpegawai->Jumlah_jam*$wherekategorilembur->besar_uang ;
+            $penggajian->jumlah_jam_lembur=$Jumlah_jam;
+            $penggajian->jumlah_uang_lembur=$Jumlah_jam*$wherekategorilembur->besar_uang ;
             $penggajian->gaji_pokok=$wherejabatan->besar_uang+$wheregolongan->besar_uang;
-            $penggajian->gaji_total=($wherelemburpegawai->Jumlah_jam*$wherekategorilembur->besar_uang)+($wheretunjangan->besar_uang)+($wherejabatan->besar_uang+$wheregolongan->besar_uang);
+            $penggajian->gaji_total=($Jumlah_jam*$wherekategorilembur->besar_uang)+($wheretunjangan->besar_uang)+($wherejabatan->besar_uang+$wheregolongan->besar_uang);
             $penggajian->tanggal_pengambilan =date('d-m-y');
             $penggajian->tunjangan_pegawai_id=Input::get('tunjangan_pegawai_id');
             $penggajian->petugas_penerima=auth::user()->name ;

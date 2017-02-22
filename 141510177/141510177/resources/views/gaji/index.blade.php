@@ -22,51 +22,56 @@
                         @php
                             $no=1 ;
                         @endphp
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Nama</th>
+                                <th>NIP</th>
+                                <th>Photo</th>
+                                <th>Status Pengambilan</th>
+                                <th colspan="2">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         @foreach($penggajian as $datapenggajian)
-                        @php
-                             
-                        @endphp
-                        <div class="col-md-6">
-                            <div class="panel panel-default pegawai">
-                            <div class="panel-heading kecil">
-                                <div class="panel-title"></div>
-                            </div>
-                            <div class="panel-body">                        
-                            <center>
-                            <p>{{$no++}}</p>
-                            <img height="100px" alt="Smiley face" width="100px" class="img-circle" src="assets/image/{{$datapenggajian->tunjangan_pegawai->pegawai->photo}}">
-
-                        <h3>{{$datapenggajian->tunjangan_pegawai->pegawai->User->name}}</h3>
-                        <h4>{{$datapenggajian->tunjangan_pegawai->pegawai->nip}}</h4>
-                        <h5><b>
-                        @if($datapenggajian->tanggal_pengambilan == ""&&$datapenggajian->status_pengambilan == "0")
-                            Gaji Belum Diambil 
-                            <div class="col-md-12">
-                            <a class="btn btn-primary col-md-12" href="{{route('gaji.edit',$datapenggajian->id)}}">Ubah Pengambilan</a>
-                        </div>
-                        @elseif($datapenggajian->tanggal_pengambilan == ""||$datapenggajian->status_pengambilan == "0")
-                            Gaji Belum Diambil
-                            <div class="col-md-12">
-                            <a class="btn btn-primary col-md-12 " href="{{route('gaji.edit',$datapenggajian->id)}}">Ubah Pengambilan</a>
-                        </div>
-                        @else
-                            Gaji Sudah Diambil Pada {{$datapenggajian->tanggal_pengambilan}}
-                        @endif</b></h5>
-                        
-
-
-
-                        </h5>
-                        
-                                <a class="btn btn-primary col-md-4 a" href="{{route('gaji.show',$datapenggajian->id)}}">Detail</a>
-                                     {!!Form::open(['method'=>'DELETE','route'=>['penggajian.destroy',$datapenggajian->id]])!!}
-                                    {!!Form::submit('Delete',['class'=>'btn btn-danger col-md-4 a'])!!}
+                            <tr>
+                                <td>{{$no++}}</td>
+                                <td>{{$datapenggajian->tunjangan_pegawai->pegawai->User->name}}</td>
+                                <td>{{$datapenggajian->tunjangan_pegawai->pegawai->nip}}</td>
+                                <td>
+                                    <div class="dropdown">
+                                                <a href="#" class="dropdown-toggle btn btn-primary" data-toggle="dropdown" role="button" aria-expanded="false">Lihat Photo <span class="caret"></span>
+                                                </a>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    <img src="assets/image/{{$datapenggajian->tunjangan_pegawai->pegawai->photo}}" width="200" height="200">
+                                                </ul>
+                                            </div>
+                                </td>
+                                <td>
+                                    @if($datapenggajian->tanggal_pengambilan == ""&&$datapenggajian->status_pengambilan == "0")
+                                    Gaji Belum Diambil 
+                                    <div >
+                                    <a class="btn btn-primary " href="{{route('gaji.edit',$datapenggajian->id)}}">Ubah Pengambilan</a>
+                                    </div>
+                                    @elseif($datapenggajian->tanggal_pengambilan == ""||$datapenggajian->status_pengambilan == "0")
+                                        Gaji Belum Diambil
+                                        <div >
+                                        <a class="btn btn-primary  " href="{{route('gaji.edit',$datapenggajian->id)}}">Ubah Pengambilan</a>
+                                    </div>
+                                    @else
+                                        Gaji Sudah Diambil Pada {{$datapenggajian->tanggal_pengambilan}}
+                                    @endif
+                                </td>
+                                <td><a class="btn btn-success " href="{{route('gaji.show',$datapenggajian->id)}}">Detail</a></td>
+                                <td>
+                                    {!!Form::open(['method'=>'DELETE','route'=>['penggajian.destroy',$datapenggajian->id]])!!}
+                                    {!!Form::submit('Delete',['class'=>'btn btn-danger'])!!}
                                     {!!Form::close()!!}
-                                
-                        </center>
-                        </div>
-                        </div>
-                        </div> 
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        
                         @endforeach
                         
                     </table>

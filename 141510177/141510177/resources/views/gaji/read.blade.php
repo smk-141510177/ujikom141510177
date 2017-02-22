@@ -10,12 +10,7 @@
         border-style: circle ;
     }
 </style>
-        <div class="col-md-9">
-            <div class="panel panel-default">
-                <div class="panel-heading"><h2>Table Penggajian</div>
-                    
-                <div class="">
-                    <div class="col-md-12">
+       <div class="col-md-12">
                         <a href="{{url('gaji/create')}}" class="btn btn-primary form-control">Tambah Data</a>
                         
                     </div>
@@ -34,7 +29,7 @@
                         @else
                             Gaji Sudah Diambil Pada {{$datapenggajian->tanggal_pengambilan}}
                         @endif</b>
-                        <h5>Gaji Lembur Sebesar Rp.{{$datapenggajian->jumlah_uang_lembur}} ,Gaji Pokok Sebesar Rp.{{$datapenggajian->gaji_pokok}} ,Mendapat Tunjangan Sebesar Rp.{{$datapenggajian->tunjangan_pegawai->tunjangan->besaran_uang}} ,Jadi Total Gaji Rp.{{$datapenggajian->gaji_total}}
+                        <h5>Gaji Lembur Sebesar Rp.{{$datapenggajian->jumlah_uang_lembur}} ,Gaji Pokok Sebesar Rp.{{$datapenggajian->gaji_pokok}} ,Mendapat Tunjangan Sebesar Rp.{{$datapenggajian->tunjangan_pegawai->tunjangan->besar_uang}} ,Jadi Total Gaji Rp.{{$datapenggajian->gaji_total}}
 
 
 
@@ -46,9 +41,5 @@
                         </div> 
                         
                     </table>
-                </div>
-
-            </div>
-        </div>
         
 @endsection
