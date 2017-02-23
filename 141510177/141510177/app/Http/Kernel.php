@@ -57,6 +57,7 @@ class Kernel extends HttpKernel
         'hrd' => \App\Http\Middleware\HRD::class,
         'keuangan' => \App\Http\Middleware\Keuangan::class,
         'karyawan' => \App\Http\Middleware\Pegawai::class,
+        'jwt-auth' => \App\Http\Middleware\authJWT::class,
     ];
 }
 
