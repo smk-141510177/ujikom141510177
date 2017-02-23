@@ -23,6 +23,7 @@ class CreatePenggajiansTable extends Migration
             $table->date('tanggal_pengambilan');
             $table->boolean('status_pengambilan')->default(0);
             $table->string('petugas_penerima');
+            $table->integer('bulan');
             $table->timestamps();
         });
     }

@@ -18,7 +18,7 @@ class tunjanganpController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('dua');
+        $this->middleware('keuangan');
     }
     public function index()
     {

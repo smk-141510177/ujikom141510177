@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Lembur_pegawai extends Model
 {
     protected $table='lembur_pegawais';
-    protected $fillable=['id','kode_lembur_id','pegawai_id','Jumlah_jam','created_at'];
+    protected $fillable=['id','kode_lembur_id','pegawai_id','Jumlah_jam','bulan','created_at'];
 
     public function pegawai(){
     	return $this->belongsTo('App\Pegawai','pegawai_id');

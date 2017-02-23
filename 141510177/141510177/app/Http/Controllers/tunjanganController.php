@@ -17,7 +17,7 @@ class tunjanganController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin');
+        $this->middleware('keuangan');
     }
     public function index()
     {

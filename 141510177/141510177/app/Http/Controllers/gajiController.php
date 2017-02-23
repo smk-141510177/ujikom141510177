@@ -21,10 +21,48 @@ class gajiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-     public function index()
+     public function __construct()
     {
+        $this->middleware('karyawan');
+    }
+     public function index()
+    {   
+        if (Auth::user()->type_user=='Karyawan') {
+            $wherepegawai=Pegawai::where('user_id',Auth::user()->id)->first();
+            // dd($wherepegawai->id);
+            $wheretunjangan=Tunjangan_pegawai::where('pegawai_id', $wherepegawai->id)->first();
+            // dd($wheretunjangan);
+            $penggajian=Penggajian::where('tunjangan_pegawai_id',$wheretunjangan->id)->paginate(5);
+            // dd($penggajian);
+
+            return view('gaji.karyawan',compact('penggajian'));
+            
+
+        }
+
         $penggajian=Penggajian::paginate(3);
+        // dd($penggajian);
         return view('gaji.index',compact('penggajian'));
+    }
+    public function search(Request $request)
+    {
+        $query = Input::get('q');
+         if (Auth::user()->type_user=='Karyawan') {
+            $wherepegawai=Pegawai::where('user_id',Auth::user()->id)->first();
+            // dd($wherepegawai->id);
+            $wheretunjangan=Tunjangan_pegawai::where('pegawai_id', $wherepegawai->id)->first();
+            // dd($wheretunjangan);
+            $penggajian=Penggajian::where('tunjangan_pegawai_id',$wheretunjangan->id)->where('bulan', 'LIKE', '%' . $query . '%')->paginate(5);
+            // dd($penggajian);
+
+            return view('gaji.resultkaryawan',compact('penggajian'));
+            
+
+        }
+
+        $penggajian = Penggajian::where('bulan', 'LIKE', '%' . $query . '%')->paginate(5);
+        // dd($lemburp);
+        return view('gaji.resultindex', compact('query','penggajian'));
     }
     /**
      * Show the form for creating a new resource.
@@ -44,6 +82,7 @@ class gajiController extends Controller
      */
     public function store(Request $request)
     {
+
         $penggajian=Input::all();
          // dd($penggajian);
         $where=Tunjangan_pegawai::where('id',$penggajian['tunjangan_pegawai_id'])->first();

@@ -2,6 +2,9 @@
 @section('pegawai')
     active
 @endsection
+@section('judul')
+	Akun    
+@endsection
 @section('content')
 			        <div class="col-md-6 ">
 			            <div class="panel panel-primary">

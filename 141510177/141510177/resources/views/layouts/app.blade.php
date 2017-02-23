@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,6 +35,7 @@
 </head>
 <body>
     <div id="app">
+    
         <nav class="navbar navbar-inverse navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
@@ -45,29 +47,66 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-
+                   
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
+                    
                     </a>
+                   
                 </div>
-
+                
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         &nbsp;
                     </ul>
+                <ul class="nav navbar-nav navbar-right">
                     
-                        
-                    
-                    <center>
-                        
-                        <h1><strong>Aplikasi Penggajian</strong></h1>
-                    </center>
-                    
-                    
+              @if (Auth::guest())
+              @elseif(Auth::user()->type_user == "Admin")
+                    <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <img src="assets/image/admin.jpg" width="26px" height="29px"  ">{{Auth::user()->name}}<span class="caret"></span>
+                                </a>
 
-                    <!-- Right Side Of Navbar -->
-                 
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{ url('/logout') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
+
+                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                 </ul>
+                 @else
+                    <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    {{Auth::user()->name}}<span class="caret"></span>
+                                </a>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{ url('/logout') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
+
+                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                 </ul>
+                 @endif
+                 <h2>Aplikasi Penggajian</h2>
                 </div>
             </div>
         </nav>
@@ -88,19 +127,23 @@
                         @if (Auth::guest())
                             <li role="presentation" class="active form-control"><a href="{{ url('/login') }}"><font color="black"><strong>  Login </strong></font></a></li>
                         @else
-                        @if(Auth::user()->type_user == 'Admin')
-                        <li role="presentation" class="@yield('golongan')" ><a href="{{ url('/golongan') }}"><font color="black"><strong> Golongan</strong></font></strong></font></a></li>
-                        <li role="presentation" class="@yield('jabatan')"><a href="{{ url('/jabatan') }}"><font color="black"><strong> Jabatan</strong></font></a></li>
+                        @if(Auth::user()->type_user == 'Admin' ||  Auth::user()->type_user == 'HRD')
+                            <li role="presentation" class="@yield('golongan')" ><a href="{{ url('/golongan') }}"><font color="black"><strong> Golongan</strong></font></strong></font></a></li>
+                            <li role="presentation" class="@yield('jabatan')"><a href="{{ url('/jabatan') }}"><font color="black"><strong> Jabatan</strong></font></a></li>
                         @endif
-                        @if(Auth::user()->type_user == 'Admin')
+                        @if(Auth::user()->type_user == 'Admin' || Auth::user()->type_user == 'HRD')
                         <li role="presentation" class="@yield('pegawai')"><a href="{{ url('/pegawai') }}"><font color="black"><strong> Pegawai</strong></font></a></li>
                         @endif
-                        <li role="presentation" class="@yield('kategori')"><a href="{{ url('/kategori') }}"><font color="black"><strong> Kategori Lembur</strong></font></a></li>
-                        <li role="presentation" class="@yield('lemburp')"><a href="{{ url('/lemburp') }}"><font color="black"><strong> Lembur Pegawai</strong></font></a></li>
-                        <li role="presentation" class="@yield('tunjangan')"><a href="{{ url('/tunjangan') }}"><font color="black"><strong> Kategori Tunjangan</strong></font></a></li>
-                        <li role="presentation" class="@yield('tunjanganp')"><a href="{{ url('/tunjanganp') }}"><font color="black"><strong> Tunjangan Pegawai</strong></font></a></li>
-                        <li role="presentation" class="@yield('penggajian')"><a href="{{ url('/penggajian') }}"><font color="black"><strong> Penggajian</strong></font></a></li>
-                        
+                        @if(Auth::user()->type_user == 'Admin' || Auth::user()->type_user == 'Bagian Keuangan')
+                            <li role="presentation" class="@yield('kategori')"><a href="{{ url('/kategori') }}"><font color="black"><strong> Kategori Lembur</strong></font></a></li>
+                            <li role="presentation" class="@yield('lemburp')"><a href="{{ url('/lemburp') }}"><font color="black"><strong> Lembur Pegawai</strong></font></a></li>
+                            <li role="presentation" class="@yield('tunjangan')"><a href="{{ url('/tunjangan') }}"><font color="black"><strong> Kategori Tunjangan</strong></font></a></li>
+                            <li role="presentation" class="@yield('tunjanganp')"><a href="{{ url('/tunjanganp') }}"><font color="black"><strong> Tunjangan Pegawai</strong></font></a></li>
+                            <li role="presentation" class="@yield('penggajian')"><a href="{{ url('/gaji') }}"><font color="black"><strong> Penggajian</strong></font></a></li>
+                        @endif
+                        @if(Auth::user()->type_user == 'Karyawan')
+                            <li role="presentation" class="@yield('penggajian')"><a href="{{ url('/gaji') }}"><font color="black"><strong> Penggajian</strong></font></a></li>
+                        @endif
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     <font color="black"><strong>{{ Auth::user()->name }} </strong></font><span class="caret"></span>

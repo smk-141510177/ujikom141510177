@@ -2,6 +2,10 @@
 @section('pegawai')
     active
 @endsection
+
+@section('judul')
+    Edit Akun    
+@endsection
 @section('content')
 	<div class="container">
     <div class="row">

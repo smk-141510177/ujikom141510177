@@ -14,10 +14,25 @@
     }
 </style>
         <div class="">
-                    <div class="col-md-12">
-                        <a href="{{url('gaji/create')}}" class="btn btn-primary form-control">Tambah Data</a>
-                        <center>{{$penggajian->links()}}</center>
-                    </div>
+                    <form class="navbar-form navbar-left" role="search" action="{{ url('bulangaji') }}" method="GET">
+                      <div class="form-group">
+                        <select class="form-control" placeholder="Search For Month" name="q" >
+                            <option value="1">Januari</option>
+                            <option value="2">Februari</option>
+                            <option value="3">Maret</option>
+                            <option value="4">April</option>
+                            <option value="5">Mei</option>
+                            <option value="6">Juni</option>
+                            <option value="7">Juli</option>
+                            <option value="8">Agustus</option>
+                            <option value="9">September</option>
+                            <option value="10">Oktober</option>
+                            <option value="11">November</option>
+                            <option value="12">Desember</option>
+                        </select>
+                      </div>
+                      <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
                     <table class="table table-striped table-hover table-bordered">
                         @php
                             $no=1 ;
@@ -75,6 +90,10 @@
                         @endforeach
                         
                     </table>
+                    <div class="col-md-12">
+                        <a href="{{url('gaji/create')}}" class="btn btn-primary form-control">Tambah Data</a>
+                        <center>{{$penggajian->links()}}</center>
+                    </div>
                 </div>
         
 @endsection

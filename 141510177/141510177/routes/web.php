@@ -25,4 +25,6 @@ Route::resource('/tunjangan', 'tunjanganController');
 Route::resource('/tunjanganp', 'tunjanganpController');
 Route::resource('/penggajian', 'PenggajianController');
 Route::get('query', 'PenggajianController@search');
+Route::get('bulanlembur','lemburpegawaiController@search');
 Route::resource('/gaji', 'gajiController');
+Route::get('bulangaji','gajiController@search');

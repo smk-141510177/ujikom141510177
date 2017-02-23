@@ -20,6 +20,7 @@ class CreateLemburPegawaisTable extends Migration
             $table->unsignedInteger('pegawai_id');
             $table->foreign('pegawai_id')->references('id')->on('pegawais')->onDelete('CASCADE');
             $table->Integer('Jumlah_jam');
+            $table->Integer('bulan');
             $table->timestamps();
         });
     }

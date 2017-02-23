@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,6 +35,7 @@
 </head>
 <body>
     <div id="app">
+    
         <nav class="navbar navbar-inverse navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
@@ -45,29 +47,68 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-
+                   
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="<?php echo e(url('/')); ?>">
+                    
                     </a>
+                   
                 </div>
-
+                
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         &nbsp;
                     </ul>
+                <ul class="nav navbar-nav navbar-right">
                     
-                        
-                    
-                    <center>
-                        
-                        <h1><strong>Aplikasi Penggajian</strong></h1>
-                    </center>
-                    
-                    
+              <?php if(Auth::guest()): ?>
+              <?php elseif(Auth::user()->type_user == "Admin"): ?>
+                    <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <img src="assets/image/admin.jpg" width="26px" height="29px"  "><?php echo e(Auth::user()->name); ?><span class="caret"></span>
+                                </a>
 
-                    <!-- Right Side Of Navbar -->
-                 
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="<?php echo e(url('/logout')); ?>"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
+
+                                        <form id="logout-form" action="<?php echo e(url('/logout')); ?>" method="POST" style="display: none;">
+                                            <?php echo e(csrf_field()); ?>
+
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                 </ul>
+                 <?php else: ?>
+                    <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    <?php echo e(Auth::user()->name); ?><span class="caret"></span>
+                                </a>
+
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="<?php echo e(url('/logout')); ?>"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                            Logout
+                                        </a>
+
+                                        <form id="logout-form" action="<?php echo e(url('/logout')); ?>" method="POST" style="display: none;">
+                                            <?php echo e(csrf_field()); ?>
+
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                 </ul>
+                 <?php endif; ?>
+                 <h2>Aplikasi Penggajian</h2>
                 </div>
             </div>
         </nav>
@@ -88,19 +129,23 @@
                         <?php if(Auth::guest()): ?>
                             <li role="presentation" class="active form-control"><a href="<?php echo e(url('/login')); ?>"><font color="black"><strong>  Login </strong></font></a></li>
                         <?php else: ?>
-                        <?php if(Auth::user()->type_user == 'Admin'): ?>
-                        <li role="presentation" class="<?php echo $__env->yieldContent('golongan'); ?>" ><a href="<?php echo e(url('/golongan')); ?>"><font color="black"><strong> Golongan</strong></font></strong></font></a></li>
-                        <li role="presentation" class="<?php echo $__env->yieldContent('jabatan'); ?>"><a href="<?php echo e(url('/jabatan')); ?>"><font color="black"><strong> Jabatan</strong></font></a></li>
+                        <?php if(Auth::user()->type_user == 'Admin' ||  Auth::user()->type_user == 'HRD'): ?>
+                            <li role="presentation" class="<?php echo $__env->yieldContent('golongan'); ?>" ><a href="<?php echo e(url('/golongan')); ?>"><font color="black"><strong> Golongan</strong></font></strong></font></a></li>
+                            <li role="presentation" class="<?php echo $__env->yieldContent('jabatan'); ?>"><a href="<?php echo e(url('/jabatan')); ?>"><font color="black"><strong> Jabatan</strong></font></a></li>
                         <?php endif; ?>
-                        <?php if(Auth::user()->type_user == 'Admin'): ?>
+                        <?php if(Auth::user()->type_user == 'Admin' || Auth::user()->type_user == 'HRD'): ?>
                         <li role="presentation" class="<?php echo $__env->yieldContent('pegawai'); ?>"><a href="<?php echo e(url('/pegawai')); ?>"><font color="black"><strong> Pegawai</strong></font></a></li>
                         <?php endif; ?>
-                        <li role="presentation" class="<?php echo $__env->yieldContent('kategori'); ?>"><a href="<?php echo e(url('/kategori')); ?>"><font color="black"><strong> Kategori Lembur</strong></font></a></li>
-                        <li role="presentation" class="<?php echo $__env->yieldContent('lemburp'); ?>"><a href="<?php echo e(url('/lemburp')); ?>"><font color="black"><strong> Lembur Pegawai</strong></font></a></li>
-                        <li role="presentation" class="<?php echo $__env->yieldContent('tunjangan'); ?>"><a href="<?php echo e(url('/tunjangan')); ?>"><font color="black"><strong> Kategori Tunjangan</strong></font></a></li>
-                        <li role="presentation" class="<?php echo $__env->yieldContent('tunjanganp'); ?>"><a href="<?php echo e(url('/tunjanganp')); ?>"><font color="black"><strong> Tunjangan Pegawai</strong></font></a></li>
-                        <li role="presentation" class="<?php echo $__env->yieldContent('penggajian'); ?>"><a href="<?php echo e(url('/penggajian')); ?>"><font color="black"><strong> Penggajian</strong></font></a></li>
-                        
+                        <?php if(Auth::user()->type_user == 'Admin' || Auth::user()->type_user == 'Bagian Keuangan'): ?>
+                            <li role="presentation" class="<?php echo $__env->yieldContent('kategori'); ?>"><a href="<?php echo e(url('/kategori')); ?>"><font color="black"><strong> Kategori Lembur</strong></font></a></li>
+                            <li role="presentation" class="<?php echo $__env->yieldContent('lemburp'); ?>"><a href="<?php echo e(url('/lemburp')); ?>"><font color="black"><strong> Lembur Pegawai</strong></font></a></li>
+                            <li role="presentation" class="<?php echo $__env->yieldContent('tunjangan'); ?>"><a href="<?php echo e(url('/tunjangan')); ?>"><font color="black"><strong> Kategori Tunjangan</strong></font></a></li>
+                            <li role="presentation" class="<?php echo $__env->yieldContent('tunjanganp'); ?>"><a href="<?php echo e(url('/tunjanganp')); ?>"><font color="black"><strong> Tunjangan Pegawai</strong></font></a></li>
+                            <li role="presentation" class="<?php echo $__env->yieldContent('penggajian'); ?>"><a href="<?php echo e(url('/gaji')); ?>"><font color="black"><strong> Penggajian</strong></font></a></li>
+                        <?php endif; ?>
+                        <?php if(Auth::user()->type_user == 'Karyawan'): ?>
+                            <li role="presentation" class="<?php echo $__env->yieldContent('penggajian'); ?>"><a href="<?php echo e(url('/gaji')); ?>"><font color="black"><strong> Penggajian</strong></font></a></li>
+                        <?php endif; ?>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     <font color="black"><strong><?php echo e(Auth::user()->name); ?> </strong></font><span class="caret"></span>

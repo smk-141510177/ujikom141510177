@@ -52,11 +52,11 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        
         'admin' => \App\Http\Middleware\Admin::class,
-        'dua' => \App\Http\Middleware\HRD::class,
-        'dua' => \App\Http\Middleware\Keuangan::class,
-        'tiga' => \App\Http\Middleware\HRD::class,
-        'tiga' => \App\Http\Middleware\Keuangan::class,
-        'tiga' => \App\Http\Middleware\Pegawai::class,
+        'hrd' => \App\Http\Middleware\HRD::class,
+        'keuangan' => \App\Http\Middleware\Keuangan::class,
+        'karyawan' => \App\Http\Middleware\Pegawai::class,
     ];
 }
+

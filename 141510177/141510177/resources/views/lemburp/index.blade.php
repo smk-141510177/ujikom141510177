@@ -6,6 +6,29 @@
     Daftar Lembur Pegawai
 @endsection
 @section('content')
+<!-- Split button -->
+
+ <form class="navbar-form navbar-left" role="search" action="{{ url('bulanlembur') }}" method="GET">
+  <div class="form-group">
+    <select class="form-control" placeholder="Search For Month" name="q" >
+    	<option value="1">Januari</option>
+    	<option value="2">Februari</option>
+    	<option value="3">Maret</option>
+    	<option value="4">April</option>
+    	<option value="5">Mei</option>
+    	<option value="6">Juni</option>
+    	<option value="7">Juli</option>
+    	<option value="8">Agustus</option>
+    	<option value="9">September</option>
+    	<option value="10">Oktober</option>
+    	<option value="11">November</option>
+    	<option value="12">Desember</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+	
+
 	<table border="1" class="table table-striped table-border table-hover">
 		<thead>
 			<tr>

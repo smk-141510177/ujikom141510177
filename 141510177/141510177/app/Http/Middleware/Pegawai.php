@@ -28,7 +28,7 @@ class Pegawai
         { 
             return $next($request);
         }
-        else if (Auth::check() && Auth::user()->type_user == "Pegawai")
+        else if (Auth::check() && Auth::user()->type_user == "Karyawan")
         { 
             return $next($request);
         }

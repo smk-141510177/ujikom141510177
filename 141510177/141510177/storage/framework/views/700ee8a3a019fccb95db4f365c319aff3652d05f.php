@@ -1,6 +1,9 @@
 <?php $__env->startSection('pegawai'); ?>
     active
 <?php $__env->stopSection(); ?>
+<?php $__env->startSection('judul'); ?>
+	Akun    
+<?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 			        <div class="col-md-6 ">
 			            <div class="panel panel-primary">

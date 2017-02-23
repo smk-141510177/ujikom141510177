@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-
+use Auth;
 class HRD
 {
     /**
@@ -23,7 +23,7 @@ class HRD
         { 
             return $next($request);
         }
-        
+
         return redirect('/');
     }
 }

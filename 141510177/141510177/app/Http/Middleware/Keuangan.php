@@ -20,10 +20,6 @@ class Keuangan
         { 
             return $next($request);
         }
-        else if (Auth::check() && Auth::user()->type_user == "HRD")
-        { 
-            return $next($request);
-        }
         else if (Auth::check() && Auth::user()->type_user == "Bagian Keuangan")
         { 
             return $next($request);

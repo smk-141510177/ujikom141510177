@@ -18,7 +18,7 @@ class lemburpegawaiController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('dua');
+        $this->middleware('keuangan');
     }
     public function index()
     {
@@ -28,11 +28,20 @@ class lemburpegawaiController extends Controller
         //                                     lembur_pegawais.pegawai_id as pegawai_id" )
         //                         ->groupBy('kode_lembur_id','pegawai_id')
         //                         ->get();
-        $lembur=Lembur_pegawai::paginate(5);
+        
+        $lembur=Lembur_pegawai::
+        paginate(5);
         
         return view('lemburp.index',compact('lembur','a'));
     }
+    public function search(Request $request)
+    {
+        $query = Request::get('q');
 
+        $lembur = Lembur_pegawai::where('bulan', 'LIKE', '%' . $query . '%')->get();
+        // dd($lemburp);
+        return view('lemburp.result', compact('query','lembur'));
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -42,7 +51,8 @@ class lemburpegawaiController extends Controller
     {
         $pegawai=Pegawai::all();
         $kategori=Kategori_lembur::all();
-        return view('lemburp.create',compact('pegawai','kategori'));
+        $bulan=Carbon::now()->month;
+        return view('lemburp.create',compact('pegawai','kategori','bulan'));
         //
     }
         public function error1()
@@ -107,6 +117,7 @@ class lemburpegawaiController extends Controller
                             $lembur->pegawai_id=Request('pegawai_id');
                             $lembur->kode_lembur_id=$kategori->id;
                             $lembur->Jumlah_jam=Request('Jumlah_jam');
+                            $lembur->bulan=Request('bulan');
                             $lembur->save();
                             return redirect('lemburp');
                         
