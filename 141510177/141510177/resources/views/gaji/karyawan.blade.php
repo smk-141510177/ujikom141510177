@@ -3,6 +3,9 @@
 @section('judul')
     Daftar Penggajian
 @endsection
+@section('penggajian')
+    active
+@endsection
 @section('content')
 <style type="text/css">
     td,th{

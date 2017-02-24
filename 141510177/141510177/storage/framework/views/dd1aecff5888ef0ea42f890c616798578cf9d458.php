@@ -12,13 +12,13 @@
                         
 
                         <div class="form-group<?php echo e($errors->has('pegawai_id') ? ' has-error' : ''); ?>">
-                            <label for="pegawai_id" class="col-md-4 control-label">pegawai_id</label>
+                            <label for="pegawai_id" class="col-md-4 control-label">Pegawai</label>
 
                             <div class="col-md-6">
                                 <select name="pegawai_id" class="form-control">
                                     <option value="">pilih</option>
                                     <?php $__currentLoopData = $pegawai; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getFirstLoop(); ?>
-                                    <option value="<?php echo e($data->id); ?>"><?php echo e($data->nip); ?></option>
+                                    <option value="<?php echo e($data->id); ?>"><?php echo e($data->user->name); ?></option>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getFirstLoop(); ?>
                                 </select>
 

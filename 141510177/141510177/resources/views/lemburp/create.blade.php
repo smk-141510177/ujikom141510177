@@ -12,13 +12,13 @@
                         
 
                         <div class="form-group{{ $errors->has('pegawai_id') ? ' has-error' : '' }}">
-                            <label for="pegawai_id" class="col-md-4 control-label">pegawai_id</label>
+                            <label for="pegawai_id" class="col-md-4 control-label">Pegawai</label>
 
                             <div class="col-md-6">
                                 <select name="pegawai_id" class="form-control">
                                     <option value="">pilih</option>
                                     @foreach($pegawai as $data)
-                                    <option value="{{$data->id}}">{{$data->nip}}</option>
+                                    <option value="{{$data->id}}">{{$data->user->name}}</option>
                                     @endforeach
                                 </select>
 

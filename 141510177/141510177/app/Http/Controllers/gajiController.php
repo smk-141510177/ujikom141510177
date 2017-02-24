@@ -14,6 +14,7 @@ use App\Lembur_pegawai ;
 use Input ;
 use Validator ;
 use auth ;
+use Carbon\Carbon;
 class gajiController extends Controller
 {
     /**
@@ -98,7 +99,9 @@ class gajiController extends Controller
         $wherelemburpegawai=Lembur_pegawai::where('pegawai_id',$wherepegawai->id)->get();
         $Jumlah_jam=0;
         foreach ($wherelemburpegawai as $jam) {
-            $Jumlah_jam+=$jam->Jumlah_jam;
+            if ($jam->created_at->month == Carbon::now()->month) {
+                $Jumlah_jam+=$jam->Jumlah_jam;
+            }
         }
         // dd($Jumlah_jam);
         $wherejabatan=Jabatan::where('id',$wherepegawai->jabatan_id)->first();
@@ -106,12 +109,31 @@ class gajiController extends Controller
         $wheregolongan=Golongan::where('id',$wherepegawai->golongan_id)->first();
         // dd($wheregolongan);
         $penggajian=new Penggajian ;
-        if (isset($wherepenggajian)) {
-            $error=true ;
-            $tunjangan=Tunjangan_pegawai::paginate(10);
-            return view('gaji.create',compact('tunjangan','error'));
+       
+
+
+
+
+        $gaji=Penggajian::all();
+        $check=0;
+        foreach ($gaji as $data) {
+            $check++;
         }
-        elseif (!isset($wherelemburpegawai)) {
+        if ($check>0) {
+            # code...
+            foreach ($gaji as $data) {
+                # code...
+                $tanggal=$data->created_at->month.'-'.$data->created_at->year;
+                $sekarang=Carbon::now()->month.'-'.Carbon::now()->year;
+                if($tanggal == $sekarang && $data->tunjangan_pegawai_id == Request('tunjangan_pegawai_id')){
+                    $error=true ;
+                    $tunjangan=Tunjangan_pegawai::paginate(10);
+                    return view('gaji.create',compact('tunjangan','error'));
+                   
+                }
+                
+            }
+            if (!isset($wherelemburpegawai)) {
             $nol=0 ;
             $penggajian->jumlah_jam_lembur=$nol;
             $penggajian->jumlah_uang_lembur=$nol ;
@@ -119,6 +141,7 @@ class gajiController extends Controller
             $penggajian->gaji_total=($wheretunjangan->besar_uang)+($wherejabatan->besar_uang+$wheregolongan->besar_uang);
         $penggajian->tunjangan_pegawai_id=Input::get('tunjangan_pegawai_id');
         $penggajian->petugas_penerima=auth::user()->name ;
+        $penggajian->bulan=Carbon::now()->month ;
         $penggajian->save();
         }
         elseif (!isset($wherelemburpegawai)||!isset($wherekategorilembur)) {
@@ -129,6 +152,7 @@ class gajiController extends Controller
             $penggajian->gaji_total=($wheretunjangan->besar_uang)+($wherejabatan->besar_uang+$wheregolongan->besar_uang);
         $penggajian->tunjangan_pegawai_id=Input::get('tunjangan_pegawai_id');
         $penggajian->petugas_penerima=auth::user()->name ;
+        $penggajian->bulan=Carbon::now()->month ;
         $penggajian->save();
         }
         else{
@@ -139,9 +163,57 @@ class gajiController extends Controller
             $penggajian->tanggal_pengambilan =date('d-m-y');
             $penggajian->tunjangan_pegawai_id=Input::get('tunjangan_pegawai_id');
             $penggajian->petugas_penerima=auth::user()->name ;
+        $penggajian->bulan=Carbon::now()->month ;
             $penggajian->save();
             }
             return redirect('gaji');
+        }
+        else{
+            if (!isset($wherelemburpegawai)) {
+            $nol=0 ;
+            $penggajian->jumlah_jam_lembur=$nol;
+            $penggajian->jumlah_uang_lembur=$nol ;
+            $penggajian->gaji_pokok=$wherejabatan->besar_uang+$wheregolongan->besar_uang;
+            $penggajian->gaji_total=($wheretunjangan->besar_uang)+($wherejabatan->besar_uang+$wheregolongan->besar_uang);
+        $penggajian->tunjangan_pegawai_id=Input::get('tunjangan_pegawai_id');
+        $penggajian->petugas_penerima=auth::user()->name ;
+        $penggajian->bulan=Carbon::now()->month ;
+        $penggajian->save();
+        }
+        elseif (!isset($wherelemburpegawai)||!isset($wherekategorilembur)) {
+            $nol=0 ;
+            $penggajian->jumlah_jam_lembur=$nol;
+            $penggajian->jumlah_uang_lembur=$nol ;
+            $penggajian->gaji_pokok=$wherejabatan->besar_uang+$wheregolongan->besar_uang;
+            $penggajian->gaji_total=($wheretunjangan->besar_uang)+($wherejabatan->besar_uang+$wheregolongan->besar_uang);
+        $penggajian->tunjangan_pegawai_id=Input::get('tunjangan_pegawai_id');
+        $penggajian->petugas_penerima=auth::user()->name ;
+        $penggajian->bulan=Carbon::now()->month ;
+        $penggajian->save();
+        }
+        else{
+            $penggajian->jumlah_jam_lembur=$Jumlah_jam;
+            $penggajian->jumlah_uang_lembur=$Jumlah_jam*$wherekategorilembur->besar_uang ;
+            $penggajian->gaji_pokok=$wherejabatan->besar_uang+$wheregolongan->besar_uang;
+            $penggajian->gaji_total=($Jumlah_jam*$wherekategorilembur->besar_uang)+($wheretunjangan->besar_uang)+($wherejabatan->besar_uang+$wheregolongan->besar_uang);
+            $penggajian->tanggal_pengambilan =date('d-m-y');
+            $penggajian->tunjangan_pegawai_id=Input::get('tunjangan_pegawai_id');
+            $penggajian->petugas_penerima=auth::user()->name ;
+        $penggajian->bulan=Carbon::now()->month ;
+            $penggajian->save();
+            }
+            return redirect('gaji');
+        }
+
+
+
+
+
+
+
+
+
+
     }
     /**
      * Display the specified resource.

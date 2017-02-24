@@ -3,6 +3,10 @@
 @section('judul')
     Daftar Penggajian
 @endsection
+
+@section('penggajian')
+    active
+@endsection
 @section('content')
 <style type="text/css">
     td,th{
@@ -66,12 +70,12 @@
                                     @if($datapenggajian->tanggal_pengambilan == ""&&$datapenggajian->status_pengambilan == "0")
                                     Gaji Belum Diambil 
                                     <div >
-                                    <a class="btn btn-primary " href="{{route('gaji.edit',$datapenggajian->id)}}">Ubah Pengambilan</a>
+                                    <a class="btn btn-warning " href="{{route('gaji.edit',$datapenggajian->id)}}">Ubah Pengambilan</a>
                                     </div>
                                     @elseif($datapenggajian->tanggal_pengambilan == ""||$datapenggajian->status_pengambilan == "0")
                                         Gaji Belum Diambil
                                         <div >
-                                        <a class="btn btn-primary  " href="{{route('gaji.edit',$datapenggajian->id)}}">Ubah Pengambilan</a>
+                                        <a class="btn btn-warning  " href="{{route('gaji.edit',$datapenggajian->id)}}">Ubah Pengambilan</a>
                                     </div>
                                     @else
                                         Gaji Sudah Diambil Pada {{$datapenggajian->tanggal_pengambilan}}
@@ -79,7 +83,7 @@
                                 </td>
                                 <td><a class="btn btn-success " href="{{route('gaji.show',$datapenggajian->id)}}">Detail</a></td>
                                 <td>
-                                    {!!Form::open(['method'=>'DELETE','route'=>['penggajian.destroy',$datapenggajian->id]])!!}
+                                    {!!Form::open(['method'=>'DELETE','route'=>['gaji.destroy',$datapenggajian->id]])!!}
                                     {!!Form::submit('Delete',['class'=>'btn btn-danger'])!!}
                                     {!!Form::close()!!}
                                 </td>

@@ -29,18 +29,29 @@ class lemburpegawaiController extends Controller
         //                         ->groupBy('kode_lembur_id','pegawai_id')
         //                         ->get();
         
-        $lembur=Lembur_pegawai::
-        paginate(5);
-        
-        return view('lemburp.index',compact('lembur','a'));
+        $lembur=Lembur_pegawai::all();
+        $pegawai=Pegawai::all();
+        $sekarang=Carbon::now()->day.'-'.Carbon::now()->month.'-'.Carbon::now()->year;
+        // dd($sekarang);
+        return view('lemburp.index',compact('sekarang','pegawai','lembur','a'));
     }
-    public function search(Request $request)
+    public function searchbulan(Request $request)
     {
+        $pegawai=Pegawai::all();
         $query = Request::get('q');
 
         $lembur = Lembur_pegawai::where('bulan', 'LIKE', '%' . $query . '%')->get();
         // dd($lemburp);
-        return view('lemburp.result', compact('query','lembur'));
+        return view('lemburp.resultbulan', compact('pegawai','query','lembur'));
+    }
+    public function searchnama(Request $request)
+    {
+        $pegawai=Pegawai::all();
+        $query = Request::get('q');
+
+        $lembur = Lembur_pegawai::where('pegawai_id', 'LIKE', '%' . $query . '%')->get();
+        // dd($lemburp);
+        return view('lemburp.resultnama', compact('pegawai','query','lembur'));
     }
     /**
      * Show the form for creating a new resource.
@@ -85,7 +96,9 @@ class lemburpegawaiController extends Controller
                 if($tanggal == $sekarang && $data->pegawai_id == Request('pegawai_id')){
                     $tanggal=true;
                     $pegawai=Pegawai::all();
-                    return view('lemburp/create',compact('tanggal','pegawai'));
+        $bulan=Carbon::now()->month;
+
+                    return view('lemburp/create',compact('tanggal','pegawai','bulan'));
                    
                 }
                 
@@ -155,6 +168,7 @@ class lemburpegawaiController extends Controller
                             $lembur->pegawai_id=Request('pegawai_id');
                             $lembur->kode_lembur_id=$kategori->id;
                             $lembur->Jumlah_jam=Request('Jumlah_jam');
+                            $lembur->bulan=Request('bulan');
                             $lembur->save();
                             return redirect('lemburp');
                         

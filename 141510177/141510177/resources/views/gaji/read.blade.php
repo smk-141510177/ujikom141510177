@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('penggajian')
+    active
+@endsection
 @section('content')
 <style type="text/css">
     td,th{
